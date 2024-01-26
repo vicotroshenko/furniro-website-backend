@@ -4,12 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-<<<<<<< HEAD
     "start": "node dist/server.js",
     "build": "npx tsc",
-=======
-    "start": "node server.ts",
->>>>>>> 424d00c20a386ce9de2d27e0e9e199f93f2a35bc
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "nodemon server.ts"
   },
