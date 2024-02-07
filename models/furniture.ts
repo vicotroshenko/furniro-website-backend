@@ -29,7 +29,7 @@ interface IFurnitureShema {
   discount: string;
   status: string;
   amount: number;
-  size?: string;
+  size?: string[];
   pictures?: string[];
   colors?: string[];
   reviews?: IReview[];

@@ -7,6 +7,7 @@ export const router = express.Router();
 
 router.get("/", ctrl.listFurnitures);
 router.post("/", validateBody(addSchema), ctrl.addFurniture);
+router.get("/:id", ctrl.getFurnitureById);
 router.put("/:id", validateBody(addSchema), ctrl.updateFurnitureById);
 router.delete("/:id", ctrl.deleteFurnitureById);
 
