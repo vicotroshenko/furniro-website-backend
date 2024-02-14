@@ -37,7 +37,7 @@ const listFurnitures = async (req: Request, res: Response) => {
 const getFurnitureById = async (req: Request, res: Response) => {
   const { id } = req.params;
   console.log(id);
-  const result = await Furniture.findById({ _id: id }).exec();
+  const result = await Furniture.findByIdAndUpdate(id).exec();
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -69,7 +69,7 @@ const deleteFurnitureById = async (req: Request, res: Response) => {
 const addRating = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { body } = req;
-  const resultItem = await Furniture.findById({ _id: id });
+  const resultItem = await Furniture.findByIdAndUpdate(id);
   if (!resultItem) {
     throw HttpError(404, "Not found");
   }
@@ -97,7 +97,7 @@ const addRating = async (req: Request, res: Response) => {
 const updateRating = async (req: Request, res: Response) => {
   const { id, ratItem } = req.params;
   const { body } = req;
-  const resultItem = await Furniture.findById({ _id: id });
+  const resultItem = await Furniture.findByIdAndUpdate(id);
   if (!resultItem) {
     throw HttpError(404, "Not found");
   }
@@ -130,7 +130,7 @@ const updateRating = async (req: Request, res: Response) => {
 
 const deleteRating = async (req: Request, res: Response) => {
   const { id, ratItem } = req.params;
-  const resultItem = await Furniture.findById({ _id: id });
+  const resultItem = await Furniture.findByIdAndUpdate(id);
   if (!resultItem) {
     throw HttpError(404, "Not found");
   }
@@ -161,7 +161,7 @@ const deleteRating = async (req: Request, res: Response) => {
 const addReview = async (req: Request, res: Response) => {
   const { id } = req.params;
   const { body } = req;
-  const resultItem = await Furniture.findById({ _id: id });
+  const resultItem = await Furniture.findByIdAndUpdate(id);
   if (!resultItem) {
     throw HttpError(404, "Not found");
   }
@@ -194,7 +194,7 @@ const addReview = async (req: Request, res: Response) => {
 const updateReview = async (req: Request, res: Response) => {
   const { id, reveiwItem } = req.params;
   const { body } = req;
-  const resultItem = await Furniture.findById({ _id: id });
+  const resultItem = await Furniture.findByIdAndUpdate(id);
   if (!resultItem) {
     throw HttpError(404, "Not found");
   }
@@ -227,7 +227,7 @@ const updateReview = async (req: Request, res: Response) => {
 
 const deleteReview = async (req: Request, res: Response) => {
   const { id, reveiwItem } = req.params;
-  const resultItem = await Furniture.findById({ _id: id });
+  const resultItem = await Furniture.findByIdAndUpdate(id);
   if (!resultItem) {
     throw HttpError(404, "Not found");
   }
