@@ -21,7 +21,27 @@ const addFurniture = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     res.status(201).json(result);
 });
 const listFurnitures = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield furniture_1.default.find().exec();
+    const page = Number(req.query.page) || 1;
+    const limit = Number(req.query.limit) || 16;
+    const skip = (page - 1) * limit;
+    const tags = { tags: { $in: [`${req.query.tags}`] } };
+    const status = req.query.status ? { status: req.query.status } : {};
+    const category = req.query.category ? { category: req.query.category } : {};
+    const price = Number(req.query.price);
+    const sortByPrice = req.query.price ? { price } : {};
+    const result = yield furniture_1.default.find(Object.assign({}, tags), "-createdAt -updatedAt", {
+        skip,
+        limit
+    }).exec();
+    if (!result) {
+        throw (0, HttpError_1.HttpError)(404, "Not found");
+    }
+    res.json(result);
+});
+const getFurnitureById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    console.log(id);
+    const result = yield furniture_1.default.findByIdAndUpdate(id).exec();
     if (!result) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
@@ -50,16 +70,15 @@ const deleteFurnitureById = (req, res) => __awaiter(void 0, void 0, void 0, func
 const addRating = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { body } = req;
-    const resultItem = yield furniture_1.default.find({ id });
+    const resultItem = yield furniture_1.default.findByIdAndUpdate(id);
     if (!resultItem) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
-    const [object] = resultItem;
-    if (!object.rating) {
+    if (!resultItem.rating) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
     const rating = Object.assign({ id: (0, nanoid_1.nanoid)() }, body);
-    const newRating = [...object.rating, rating];
+    const newRating = [...resultItem.rating, rating];
     const result = yield furniture_1.default.findByIdAndUpdate(id, { rating: newRating }, {
         new: true,
     }).exec();
@@ -71,15 +90,14 @@ const addRating = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const updateRating = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, ratItem } = req.params;
     const { body } = req;
-    const resultItem = yield furniture_1.default.find({ id });
+    const resultItem = yield furniture_1.default.findByIdAndUpdate(id);
     if (!resultItem) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
-    const [object] = resultItem;
-    if (!object.rating) {
+    if (!resultItem.rating) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
-    const updatedRating = object.rating.map((element) => {
+    const updatedRating = resultItem.rating.map((element) => {
         if (element.id === ratItem) {
             return Object.assign(Object.assign({}, element), body);
         }
@@ -97,15 +115,14 @@ const updateRating = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 const deleteRating = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, ratItem } = req.params;
-    const resultItem = yield furniture_1.default.find({ id });
+    const resultItem = yield furniture_1.default.findByIdAndUpdate(id);
     if (!resultItem) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
-    const [object] = resultItem;
-    if (!object.rating) {
+    if (!resultItem.rating) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
-    const ratingRemoved = object.rating.filter((element) => element.id !== ratItem);
+    const ratingRemoved = resultItem.rating.filter((element) => element.id !== ratItem);
     const result = yield furniture_1.default.findByIdAndUpdate(id, { rating: ratingRemoved }, {
         new: true,
     }).exec();
@@ -117,19 +134,18 @@ const deleteRating = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 const addReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
     const { body } = req;
-    const resultItem = yield furniture_1.default.find({ id });
+    const resultItem = yield furniture_1.default.findByIdAndUpdate(id);
     if (!resultItem) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
-    const [object] = resultItem;
-    if (!object.reviews) {
+    if (!resultItem.reviews) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
     if (!body.date) {
         body.date = new Date();
     }
     const review = Object.assign({ id: (0, nanoid_1.nanoid)() }, body);
-    const newReview = [...object.reviews, review];
+    const newReview = [...resultItem.reviews, review];
     const result = yield furniture_1.default.findByIdAndUpdate(id, { reviews: newReview }, {
         new: true,
     }).exec();
@@ -141,15 +157,14 @@ const addReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 const updateReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, reveiwItem } = req.params;
     const { body } = req;
-    const resultItem = yield furniture_1.default.find({ id });
+    const resultItem = yield furniture_1.default.findByIdAndUpdate(id);
     if (!resultItem) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
-    const [object] = resultItem;
-    if (!object.reviews) {
+    if (!resultItem.reviews) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
-    const updatedReview = object.reviews.map((element) => {
+    const updatedReview = resultItem.reviews.map((element) => {
         if (element.id === reveiwItem) {
             return Object.assign(Object.assign({}, element), body);
         }
@@ -167,15 +182,14 @@ const updateReview = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 });
 const deleteReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id, reveiwItem } = req.params;
-    const resultItem = yield furniture_1.default.find({ id });
+    const resultItem = yield furniture_1.default.findByIdAndUpdate(id);
     if (!resultItem) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
-    const [object] = resultItem;
-    if (!object.reviews) {
+    if (!resultItem.reviews) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
-    const reviewRemoved = object.reviews.filter((element) => element.id !== reveiwItem);
+    const reviewRemoved = resultItem.reviews.filter((element) => element.id !== reveiwItem);
     const result = yield furniture_1.default.findByIdAndUpdate(id, { rating: reviewRemoved }, {
         new: true,
     }).exec();
@@ -187,6 +201,7 @@ const deleteReview = (req, res) => __awaiter(void 0, void 0, void 0, function* (
 exports.default = {
     addFurniture: (0, ctrlWrapper_1.ctrlWrapper)(addFurniture),
     listFurnitures: (0, ctrlWrapper_1.ctrlWrapper)(listFurnitures),
+    getFurnitureById: (0, ctrlWrapper_1.ctrlWrapper)(getFurnitureById),
     updateFurnitureById: (0, ctrlWrapper_1.ctrlWrapper)(updateFurnitureById),
     deleteFurnitureById: (0, ctrlWrapper_1.ctrlWrapper)(deleteFurnitureById),
     addRating: (0, ctrlWrapper_1.ctrlWrapper)(addRating),

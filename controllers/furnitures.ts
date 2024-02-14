@@ -14,10 +14,10 @@ const listFurnitures = async (req: Request, res: Response) => {
   const limit = Number(req.query.limit) || 16;
   const skip = (page - 1) * limit;
   const tags = { tags: { $in: [`${req.query.tags}`] } };
-  // const status = req.query.status ? { status: req.query.status } : {};
-  // const category = req.query.category ? { category: req.query.category } : {};
-  // const price = Number(req.query.price);
-  // const sortByPrice = req.query.price ? { price } : {};
+  const status = req.query.status ? { status: req.query.status } : {};
+  const category = req.query.category ? { category: req.query.category } : {};
+  const price = Number(req.query.price);
+  const sortByPrice = req.query.price ? { price } : {};
 
   const result = await Furniture.find(
     { ...tags },
