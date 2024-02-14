@@ -24,15 +24,17 @@ const listFurnitures = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 16;
     const skip = (page - 1) * limit;
-    const tags = { tags: { $in: [`${req.query.tags}`] } };
+    const tags = req.query.tags ? { tags: { $in: [`${req.query.tags}`] } } : {};
     const status = req.query.status ? { status: req.query.status } : {};
     const category = req.query.category ? { category: req.query.category } : {};
     const price = Number(req.query.price);
     const sortByPrice = req.query.price ? { price } : {};
-    const result = yield furniture_1.default.find(Object.assign({}, tags), "-createdAt -updatedAt", {
+    const result = yield furniture_1.default.find(Object.assign(Object.assign(Object.assign({}, tags), status), category), "-createdAt -updatedAt -tags -amount -size -colors -reviews -rating -general -product -dimensions -warranty", {
         skip,
-        limit
+        limit,
+        sort: sortByPrice,
     }).exec();
+    console.log(result);
     if (!result) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
@@ -40,7 +42,6 @@ const listFurnitures = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 const getFurnitureById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
-    console.log(id);
     const result = yield furniture_1.default.findByIdAndUpdate(id).exec();
     if (!result) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
