@@ -11,6 +11,7 @@ const furniture_1 = require("../../models/furniture");
 exports.router = express_1.default.Router();
 exports.router.get("/", furnitures_1.default.listFurnitures);
 exports.router.post("/", (0, validateBody_1.default)(furniture_1.addSchema), furnitures_1.default.addFurniture);
+exports.router.get("/info/:part", furnitures_1.default.getDescribeInfor);
 exports.router.get("/:id", furnitures_1.default.getFurnitureById);
 exports.router.put("/:id", (0, validateBody_1.default)(furniture_1.addSchema), furnitures_1.default.updateFurnitureById);
 exports.router.delete("/:id", furnitures_1.default.deleteFurnitureById);
