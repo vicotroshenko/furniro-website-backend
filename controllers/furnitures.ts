@@ -10,25 +10,23 @@ const addFurniture = async (req: Request, res: Response) => {
 };
 
 const listFurnitures = async (req: Request, res: Response) => {
-  const page = Number(req.query.page) || 1;
-  const limit = Number(req.query.limit) || 16;
-  const skip = (page - 1) * limit;
-  const tags = req.query.tags ? { tags: { $in: [`${req.query.tags}`] } } : {};
-  const status = req.query.status ? { status: req.query.status } : {};
-  const category = req.query.category ? { category: req.query.category } : {};
-  const price = Number(req.query.price);
-  const sortByPrice = req.query.price ? { price } : {};
+  const { page=1, limit=16, price } = req.query;
+  const status = req.query.status ? {status: req.query.status} : {};
+  const skip = (+page - 1) * +limit;
+  const sortByPrice = req.query.price ? { price:Number(price) } : {};
+
+  const category = req.body.category ? {category: [...req.body.category]} : {};
+  const tags = req.body.tags ? {tags:{ $in: [...req.body.tags]}} : {};
 
   const result = await Furniture.find(
-    { ...tags, ...status, ...category },
-    "-createdAt -updatedAt -tags -amount -size -colors -reviews -rating -general -product -dimensions -warranty",
+    { ...tags, ...status, ...category},
+    "-createdAt -updatedAt -amount -size -colors -reviews -rating -general -product -dimensions -warranty",
     {
       skip,
-      limit,
+      limit: Number(limit),
       sort: sortByPrice,
     }
   ).exec();
-  console.log(result);
 
   if (!result) {
     throw HttpError(404, "Not found");
@@ -39,6 +37,16 @@ const listFurnitures = async (req: Request, res: Response) => {
 const getFurnitureById = async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await Furniture.findByIdAndUpdate(id).exec();
+  if (!result) {
+    throw HttpError(404, "Not found");
+  }
+  res.json(result);
+};
+
+const getDescribeInfor = async (req: Request, res: Response) => {
+  const { part } = req.params;
+  const result = await Furniture.distinct(part).exec();
+
   if (!result) {
     throw HttpError(404, "Not found");
   }
@@ -260,6 +268,7 @@ export default {
   addFurniture: ctrlWrapper(addFurniture),
   listFurnitures: ctrlWrapper(listFurnitures),
   getFurnitureById: ctrlWrapper(getFurnitureById),
+  getDescribeInfor: ctrlWrapper(getDescribeInfor),
   updateFurnitureById: ctrlWrapper(updateFurnitureById),
   deleteFurnitureById: ctrlWrapper(deleteFurnitureById),
   addRating: ctrlWrapper(addRating),
