@@ -16,13 +16,7 @@ const furniture_1 = __importDefault(require("../models/furniture"));
 const ctrlWrapper_1 = require("../helpers/ctrlWrapper");
 const HttpError_1 = require("../helpers/HttpError");
 const nanoid_1 = require("nanoid");
-// function divider(element:any) {
-//   if(element){
-//     const [string] = element;
-//     const stringToArray = string.split(",")
-//     return stringToArray
-//   }
-// }
+const getParamsFromString_1 = require("../helpers/getParamsFromString");
 const addFurniture = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield furniture_1.default.create(req.body);
     res.status(201).json(result);
@@ -32,13 +26,11 @@ const listFurnitures = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const status = req.query.status ? { status: req.query.status } : {};
     const skip = (+page - 1) * +limit;
     const sortByPrice = req.query.price ? { price: Number(price) } : {};
-    const tagsLine = req.query.tags;
-    const categoryLine = req.query.category;
-    const tagsDivided = req.query.tags ? tagsLine.join("").split(",") : [];
-    const categoryDivided = req.query.category ? categoryLine.join("").split(",") : [];
-    const tags = req.query.tags ? { tags: { $in: [...tagsDivided] } } : {};
-    const category = req.query.category ? { category: [...categoryDivided] } : {};
-    const result = yield furniture_1.default.find(Object.assign(Object.assign(Object.assign({}, status), tags), category), "-createdAt -updatedAt -amount -size -colors -reviews -rating -general -product -dimensions -warranty", {
+    const tags = req.query.tags;
+    const category = req.query.category;
+    const tagsDivided = (0, getParamsFromString_1.getParamsFromString)(tags) ? { tags: { $in: (0, getParamsFromString_1.getParamsFromString)(tags) } } : {};
+    const categoryDivided = (0, getParamsFromString_1.getParamsFromString)(category) ? { category: (0, getParamsFromString_1.getParamsFromString)(category) } : {};
+    const result = yield furniture_1.default.find(Object.assign(Object.assign(Object.assign({}, status), tagsDivided), categoryDivided), "-createdAt -updatedAt -amount -size -colors -reviews -rating -general -product -dimensions -warranty", {
         skip,
         limit: Number(limit),
         sort: sortByPrice,

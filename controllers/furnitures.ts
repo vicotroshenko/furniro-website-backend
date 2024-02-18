@@ -3,14 +3,8 @@ import Furniture from "../models/furniture";
 import { ctrlWrapper } from "../helpers/ctrlWrapper";
 import { HttpError } from "../helpers/HttpError";
 import { nanoid } from "nanoid";
+import { getParamsFromString } from "../helpers/getParamsFromString";
 
-// function divider(element:any) {
-//   if(element){
-//     const [string] = element;
-//     const stringToArray = string.split(",")
-//     return stringToArray
-//   }
-// }
 
 const addFurniture = async (req: Request, res: Response) => {
   const result = await Furniture.create(req.body);
@@ -23,17 +17,14 @@ const listFurnitures = async (req: Request, res: Response) => {
   const skip = (+page - 1) * +limit;
   const sortByPrice = req.query.price ? { price:Number(price) } : {};
 
-  const tagsLine = req.query.tags as string[];
-  const categoryLine = req.query.category as string[];
-  const tagsDivided =req.query.tags ? tagsLine.join("").split(",") : [];
-  const categoryDivided =req.query.category ? categoryLine.join("").split(",") : [];
+  const tags = req.query.tags as string[];
+  const category = req.query.category as string[];
 
-  const tags = req.query.tags ? {tags:{ $in: [...tagsDivided]}} : {};
-  const category = req.query.category ? {category: [...categoryDivided]} : {};
-
+  const tagsDivided = getParamsFromString(tags) ? {tags:{ $in: getParamsFromString(tags)}} : {};
+  const categoryDivided = getParamsFromString(category) ? {category: getParamsFromString(category)} : {};
 
   const result = await Furniture.find(
-    {...status, ...tags, ...category},
+    {...status, ...tagsDivided, ...categoryDivided},
     "-createdAt -updatedAt -amount -size -colors -reviews -rating -general -product -dimensions -warranty",
     {
       skip,
