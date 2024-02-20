@@ -30,7 +30,7 @@ const listFurnitures = (req, res) => __awaiter(void 0, void 0, void 0, function*
     const category = req.query.category;
     const tagsDivided = (0, getParamsFromString_1.getParamsFromString)(tags) ? { tags: { $in: (0, getParamsFromString_1.getParamsFromString)(tags) } } : {};
     const categoryDivided = (0, getParamsFromString_1.getParamsFromString)(category) ? { category: (0, getParamsFromString_1.getParamsFromString)(category) } : {};
-    const result = yield furniture_1.default.find(Object.assign(Object.assign(Object.assign({}, status), tagsDivided), categoryDivided), "-createdAt -updatedAt -amount -size -colors -reviews -rating -general -product -dimensions -warranty", {
+    const result = yield furniture_1.default.find(Object.assign(Object.assign(Object.assign({}, status), tagsDivided), categoryDivided), "-createdAt -updatedAt -size -colors -reviews -rating -general -product -dimensions -warranty", {
         skip,
         limit: Number(limit),
         sort: sortByPrice,

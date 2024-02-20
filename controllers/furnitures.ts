@@ -25,7 +25,7 @@ const listFurnitures = async (req: Request, res: Response) => {
 
   const result = await Furniture.find(
     {...status, ...tagsDivided, ...categoryDivided},
-    "-createdAt -updatedAt -amount -size -colors -reviews -rating -general -product -dimensions -warranty",
+    "-createdAt -updatedAt -size -colors -reviews -rating -general -product -dimensions -warranty",
     {
       skip,
       limit: Number(limit),
