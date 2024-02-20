@@ -10,6 +10,7 @@ const handleMongooseError_1 = require("../helpers/handleMongooseError");
 const orderSchema = new mongoose_1.Schema({
     orderNumber: {
         type: String,
+        default: "",
     },
     firstName: {
         type: String,
@@ -21,6 +22,7 @@ const orderSchema = new mongoose_1.Schema({
     },
     company: {
         type: String,
+        default: "",
     },
     country: {
         type: String,
@@ -36,6 +38,7 @@ const orderSchema = new mongoose_1.Schema({
     },
     zip: {
         type: String,
+        default: "",
     },
     phone: {
         type: String,
@@ -47,6 +50,7 @@ const orderSchema = new mongoose_1.Schema({
     },
     additional: {
         type: String,
+        default: "",
     },
     orderType: {
         type: String,
@@ -62,21 +66,22 @@ const orderSchema = new mongoose_1.Schema({
     },
     createdAt: {
         type: String,
+        default: "",
     }
 });
 orderSchema.post("save", (mongo) => (0, handleMongooseError_1.handleMongooseError)(Object.assign({ data: 0, error: undefined, next: undefined }, mongo)));
 exports.addOrderSchema = joi_1.default.object({
-    orderNumber: joi_1.default.string(),
+    orderNumber: joi_1.default.string().empty(''),
     firstName: joi_1.default.string().required(),
     lastName: joi_1.default.string().required(),
-    company: joi_1.default.string(),
+    company: joi_1.default.string().empty(''),
     country: joi_1.default.string().required(),
     region: joi_1.default.string().required(),
     city: joi_1.default.string().required(),
-    zip: joi_1.default.string(),
+    zip: joi_1.default.string().empty(''),
     phone: joi_1.default.string().required(),
     email: joi_1.default.string().required(),
-    additional: joi_1.default.string(),
+    additional: joi_1.default.string().empty(''),
     orderType: joi_1.default.string().required(),
     totalPrice: joi_1.default.string().required(),
     order: joi_1.default.array().items(joi_1.default.object({
@@ -89,7 +94,7 @@ exports.addOrderSchema = joi_1.default.object({
         buyAmount: joi_1.default.number().required(),
         date: joi_1.default.string().required(),
     })),
-    createdAt: joi_1.default.string()
+    createdAt: joi_1.default.string().empty('')
 });
 const Order = (0, mongoose_1.model)("Order", orderSchema);
 exports.default = Order;

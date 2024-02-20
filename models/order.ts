@@ -34,6 +34,7 @@ interface IOrderShema {
 const orderSchema = new Schema<IOrderShema>({
 	orderNumber: {
 		type: String,
+		default: "",
 	},
 	firstName: {
     type: String,
@@ -45,6 +46,7 @@ const orderSchema = new Schema<IOrderShema>({
   },
 	company: {
     type: String,
+		default: "",
   },
 	country: {
     type: String,
@@ -60,6 +62,7 @@ const orderSchema = new Schema<IOrderShema>({
   },
 	zip: {
     type: String,
+		default: "",
   },
 	phone: {
     type: String,
@@ -71,6 +74,7 @@ const orderSchema = new Schema<IOrderShema>({
   },
 	additional: {
     type: String,
+		default: "",
   },
 	orderType: {
     type: String,
@@ -86,6 +90,7 @@ const orderSchema = new Schema<IOrderShema>({
 	},
 	createdAt:{
 		type: String,
+		default: "",
 	}
 });
 
@@ -94,17 +99,17 @@ orderSchema.post("save", (mongo) =>
 );
 
 export const addOrderSchema = Joi.object({
-	orderNumber: Joi.string(),
+	orderNumber: Joi.string().empty(''),
 	firstName: Joi.string().required(),
 	lastName: Joi.string().required(),
-	company: Joi.string(),
+	company: Joi.string().empty(''),
 	country: Joi.string().required(),
 	region: Joi.string().required(),
 	city: Joi.string().required(),
-	zip: Joi.string(),
+	zip: Joi.string().empty(''),
 	phone: Joi.string().required(),
 	email: Joi.string().required(),
-	additional: Joi.string(),
+	additional: Joi.string().empty(''),
 	orderType: Joi.string().required(),
 	totalPrice: Joi.string().required(),
 	order: Joi.array().items(Joi.object({
@@ -117,7 +122,7 @@ export const addOrderSchema = Joi.object({
 		buyAmount: Joi.number().required(),
 		date: Joi.string().required(),
 	})),
-	createdAt: Joi.string()
+	createdAt: Joi.string().empty('')
 });
 
 
