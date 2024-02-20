@@ -3,7 +3,8 @@ import logger from "morgan";
 import dotenv from "dotenv";
 import cors from "cors";
 import { ErrorExpanded } from "types/types";
-import {router as furnituresRouter} from "./routes/api/furnitures";
+import { router as furnituresRouter } from "./routes/api/furnitures";
+import { router as ordersRouter } from "./routes/api/orders";
 
 dotenv.config();
 
@@ -12,9 +13,10 @@ const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
 app.use(logger(formatsLogger));
 app.use(cors());
-app.use(express.json())
+app.use(express.json());
 app.use(express.static("public"));
-app.use("/api/furnitures", furnituresRouter)
+app.use("/api/furnitures", furnituresRouter);
+app.use("/api/orders", ordersRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Express + TypeScript Server");

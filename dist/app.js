@@ -8,6 +8,7 @@ const morgan_1 = __importDefault(require("morgan"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const cors_1 = __importDefault(require("cors"));
 const furnitures_1 = require("./routes/api/furnitures");
+const orders_1 = require("./routes/api/orders");
 dotenv_1.default.config();
 const app = (0, express_1.default)();
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
@@ -16,6 +17,7 @@ app.use((0, cors_1.default)());
 app.use(express_1.default.json());
 app.use(express_1.default.static("public"));
 app.use("/api/furnitures", furnitures_1.router);
+app.use("/api/orders", orders_1.router);
 app.get("/", (req, res) => {
     res.send("Express + TypeScript Server");
 });
