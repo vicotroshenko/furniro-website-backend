@@ -4,6 +4,7 @@ import { ctrlWrapper } from "../helpers/ctrlWrapper";
 import { HttpError } from "../helpers/HttpError";
 import { nanoid } from "nanoid";
 import { getParamsFromString } from "../helpers/getParamsFromString";
+import { date } from "joi";
 
 
 const addFurniture = async (req: Request, res: Response) => {
@@ -185,7 +186,8 @@ const addReview = async (req: Request, res: Response) => {
   }
 
   if (!body.date) {
-    body.date = new Date();
+    const date = new Date()
+    body.date = date.toLocaleDateString();
   }
 
   const review = { id: nanoid(), ...body };

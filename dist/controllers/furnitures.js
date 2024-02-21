@@ -151,7 +151,8 @@ const addReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
     if (!body.date) {
-        body.date = new Date();
+        const date = new Date();
+        body.date = date.toLocaleDateString();
     }
     const review = Object.assign({ id: (0, nanoid_1.nanoid)() }, body);
     const newReview = [...resultItem.reviews, review];

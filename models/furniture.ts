@@ -17,8 +17,8 @@ interface IReview {
   id?: string;
   author?: string;
   name: string;
-  rewiew: string;
-  date?: Date;
+  review: string;
+  date?: string;
 }
 
 interface IFurnitureShema {
