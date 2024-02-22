@@ -99,7 +99,7 @@ exports.addReview = joi_1.default.object({
     author: joi_1.default.string(),
     name: joi_1.default.string().required(),
     review: joi_1.default.string().required(),
-    date: joi_1.default.date(),
+    date: joi_1.default.string(),
 });
 const Furniture = (0, mongoose_1.model)("Furniture", furnitureSchema);
 exports.default = Furniture;
