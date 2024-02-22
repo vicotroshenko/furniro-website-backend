@@ -147,7 +147,7 @@ export const addReview = Joi.object({
   author: Joi.string(),
   name: Joi.string().required(),
   review: Joi.string().required(),
-  date: Joi.date(),
+  date: Joi.string(),
 });
 
 const Furniture = model("Furniture", furnitureSchema);
