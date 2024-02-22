@@ -38,11 +38,10 @@ const listFurnitures = (req, res) => __awaiter(void 0, void 0, void 0, function*
     if (!result) {
         throw (0, HttpError_1.HttpError)(404, "Not found");
     }
-    const count = yield furniture_1.default.countDocuments();
-    if (!count) {
-        throw (0, HttpError_1.HttpError)(404, "Not foundd");
-    }
-    res.json({ count, result });
+    const countAllDocs = yield furniture_1.default.countDocuments();
+    const countNew = yield furniture_1.default.countDocuments({ status: "new" });
+    const countDiscount = yield furniture_1.default.countDocuments({ status: "discount" });
+    res.json({ stat: { countAllDocs, countNew, countDiscount }, result });
 });
 const getFurnitureById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
