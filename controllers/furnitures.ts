@@ -4,7 +4,6 @@ import { ctrlWrapper } from "../helpers/ctrlWrapper";
 import { HttpError } from "../helpers/HttpError";
 import { nanoid } from "nanoid";
 import { getParamsFromString } from "../helpers/getParamsFromString";
-import { date } from "joi";
 
 
 const addFurniture = async (req: Request, res: Response) => {
@@ -37,7 +36,12 @@ const listFurnitures = async (req: Request, res: Response) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  res.json(result);
+  const count = await Furniture.countDocuments();
+
+  if (!count) {
+    throw HttpError(404, "Not foundd");
+  }
+  res.json({count, result});
 };
 
 const getFurnitureById = async (req: Request, res: Response) => {
@@ -270,6 +274,7 @@ const deleteReview = async (req: Request, res: Response) => {
 
   res.json(reviewRemoved);
 };
+
 
 export default {
   addFurniture: ctrlWrapper(addFurniture),
