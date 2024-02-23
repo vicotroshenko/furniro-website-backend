@@ -36,11 +36,10 @@ const listFurnitures = async (req: Request, res: Response) => {
   if (!result) {
     throw HttpError(404, "Not found");
   }
-  const countAllDocs = await Furniture.countDocuments();
-  const countNew = await Furniture.countDocuments({status: "new"});
-  const countDiscount = await Furniture.countDocuments({status: "discount"});
+  const summary = await Furniture.countDocuments({...status, ...tagsDivided, ...categoryDivided});
 
-  res.json({stat:{countAllDocs, countNew, countDiscount}, result});
+
+  res.json({summary, result});
 };
 
 const getFurnitureById = async (req: Request, res: Response) => {
