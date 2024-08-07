@@ -1,47 +1,10 @@
 import { Schema, model } from "mongoose";
 import Joi from "joi";
-import { handleMongooseError } from "../helpers/handleMongooseError";
+import { handleMongooseError } from "../helpers";
+import { IFurnitureSchema } from "types/furnityre.type";
 
-interface IGoodData {
-  title: string;
-  value: string;
-}
 
-interface IRating {
-  user: string;
-  id: string;
-  mark: number;
-}
-
-interface IReview {
-  id?: string;
-  author?: string;
-  name: string;
-  review: string;
-  date?: string;
-}
-
-interface IFurnitureShema {
-  title: string;
-  description: string;
-  price: string;
-  tags?: string[];
-  discount: string;
-  status: string;
-  amount: number;
-  size?: string[];
-  pictures?: string[];
-  colors?: string[];
-  reviews?: IReview[];
-  rating?: IRating[];
-  general?: IGoodData[];
-  product?: IGoodData[];
-  dimensions?: IGoodData[];
-  warranty?: object;
-  category: string;
-}
-
-const furnitureSchema = new Schema<IFurnitureShema>({
+export const furnitureSchema = new Schema<IFurnitureSchema>({
   title: {
     type: String,
     required: true,
@@ -82,9 +45,11 @@ const furnitureSchema = new Schema<IFurnitureShema>({
   },
   reviews: {
     type: [],
+    default: [],
   },
   rating: {
     type: [],
+    default: [],
   },
   general: {
     type: [],

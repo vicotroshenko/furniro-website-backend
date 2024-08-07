@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { HttpError } from "../helpers/HttpError";
-
+import { HttpError } from "../helpers";
+import { ErrorMessage, ErrorStatus } from "../constants/http.constant";
 
 const validateBody = (schema: any) => {
   const func = (req: Request, res: Response, next: NextFunction) => {
     const { error } = schema.validate(req.body);
     console.log("schema", error);
     if (error) {
-      next(HttpError(400, "missing required name field"));
+      next(new HttpError(ErrorStatus.BAD_REQUEST, ErrorMessage.MISSING_FIELD));
     }
     next();
   };

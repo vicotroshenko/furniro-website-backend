@@ -1,37 +1,11 @@
 import { Schema, model } from "mongoose";
 import Joi from "joi";
-import { handleMongooseError } from "../helpers/handleMongooseError";
+import { handleMongooseError } from "../helpers";
+import { IOrderSchema } from "../types/orders.type";
 
-interface ICart {
-	_id: string;
-	title: string;
-	price: string;
-	amount: number;
-	pictures: string[];
-	discount: string;
-  buyAmount?: number;
-  date?: string;
-}
 
-interface IOrderShema {
-	orderNumber?: string;
-	firstName: string,
-	lastName: string,
-	company?: string,
-	country: string,
-	region: string,
-	city: string,
-	zip?: string,
-	phone: string,
-	email: string,
-	additional?: string,
-	orderType: string,
-	totalPrice: string;
-	order: ICart[];
-	createdAt?: string;
-}
 
-const orderSchema = new Schema<IOrderShema>({
+const orderSchema = new Schema<IOrderSchema>({
 	orderNumber: {
 		type: String,
 		default: "",

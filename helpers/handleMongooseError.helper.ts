@@ -6,8 +6,7 @@ interface IHandleMongoosError {
   next: NextFunction | undefined;
 }
 
-export const handleMongooseError = ({error, data, next}:IHandleMongoosError) => {
-  console.log(error);
+const handleMongooseError = ({error, data, next}:IHandleMongoosError) => {
   if(error !== undefined && next !== undefined) {
     const { name, code } = error;
     const status = name === "MongoServerError" && code === 11000 ? 409 : 400;
@@ -15,3 +14,5 @@ export const handleMongooseError = ({error, data, next}:IHandleMongoosError) => 
     next();
   }
 };
+
+export default handleMongooseError;
